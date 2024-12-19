@@ -1,0 +1,4 @@
+PL_NAME,SPEC_PATH,SPEC_TYPE,BIBCODE,AUTHORS,NUM_DATAPOINTS,INSTRUMENT,FACILITY,MINWAVELNG,MAXWAVELNG,MINTRANMID,MAXTRANMID,NOTE
+WASP-39 b,65/39/94/57/WASP_39_b_3.11466_3717_1.tbl,Transmission,2016Natur.529...59S,Sing et al. 2016,2,Infrared Array Camera (IRAC),Spitzer Space Telescope satellite,3.56,4.5,null,null,null
+WASP-39 b,97/09/63/32/WASP_39_b_3.11466_3717_2.tbl,Transmission,2016Natur.529...59S,Sing et al. 2016,33,Space Telescope Imaging Spectrograph,Hubble Space Telescope satellite,0.33,0.965,null,null,null
+WASP-39 b,36/05/64/60/WASP_39_b_3.11466_4132_1.tbl,Transmission,2018AJ....155...29W,Wakeford et al. 2018,36,Wide Field Camera 3,Hubble Space Telescope satellite,0.8225,1.6435,null,null,null
