@@ -37,7 +37,9 @@ def main():
         alpha=0.2
     )
 
-    util.clean_multifigure(fig, ax)
+    #util.clean_multifigure(fig, ax)
+    fig.tight_layout()
+    fig.savefig("first_test.png")
 
 
 def argument_parser() -> argparse.Namespace:

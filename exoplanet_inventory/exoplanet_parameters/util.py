@@ -7,7 +7,7 @@ import pyvo
 
 def set_multifigure():
     figure, total_axis = plt.subplots(
-        figsize=(9, 4), ncols=3, width_ratios=[4, 1, 4]
+        figsize=(8, 4), ncols=2, #width_ratios=[4, 1, 4]
     )
     for axis in total_axis:
         axis.set(yscale="log", xscale="log")
@@ -33,7 +33,6 @@ def fill_axis(
 def clean_multifigure(total_figure, total_axis):
     total_figure.tight_layout()
     total_axis[1].axis("off")
-    plt.show()
 
 
 def read_exoplanet_parameters() -> pl.DataFrame:
