@@ -35,9 +35,6 @@ def cumulative_discovery_data(
         dataframe=ascending_discovery_frame
     )
 
-    print(cumulative_counts)
-    exit()
-
     return cumulative_counts
 
 
@@ -128,20 +125,15 @@ def set_discovery_figure(space_missions: bool) -> tuple[plt.Figure, plt.Axes]:
     # Axis formatting settings
     axis.set(
         xlabel="Discovery year",
-        ylabel="Cumulative number of known planets",
+        ylabel="Cumulative number of known exoplanets",
         yscale="log"
     )
 
     # Customise y-axis ticks and labels
-    yax_minor_locator = ticks.FixedLocator(
-        np.array([
-            [idx * 10 ** n for idx in range(1, 11)] 
-            for n in range(5)
-        ]).flatten()
+    axis.set(
+        yticks=[1, 10, 100, 1000, 10000],
+        yticklabels=["1", "10", "100", "10$^3$", "10$^4$"]
     )
-    axis.yaxis.set_minor_locator(yax_minor_locator)
-    # This is not nice!
-    axis.set_yticklabels(["", "", "1", "10", "$10^2$", "$10^3$", "$10^4$"])
 
     # Potentially plot additional information
     if space_missions:
@@ -150,6 +142,22 @@ def set_discovery_figure(space_missions: bool) -> tuple[plt.Figure, plt.Axes]:
         }
         for _, year in mission_data.items():
             plot_spacemission_indicator(axis, year, "--")
+
+    return figure, axis
+
+
+def set_discovery_figure_alt(
+        space_missions: bool
+) -> tuple[plt.Figure, plt.Axes]:
+    """DOC!"""
+    figure, axis = plt.subplots(figsize=(10, 4), constrained_layout=True)
+
+    axis.set(
+        xlabel="Discovery year",
+        # ylabel="Cumulative number of known exoplanets",
+        ylabel="$\\Sigma$ of exoplanets",
+        yscale="log"
+    )
 
     return figure, axis
 

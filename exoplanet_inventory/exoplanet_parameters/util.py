@@ -7,7 +7,8 @@ import pyvo
 
 def set_multifigure():
     figure, total_axis = plt.subplots(
-        figsize=(8, 4), ncols=2, #width_ratios=[4, 1, 4]
+        figsize=(10, 4), ncols=2, #width_ratios=[4, 1, 4]
+        constrained_layout=True
     )
     for axis in total_axis:
         axis.set(yscale="log", xscale="log")
@@ -19,14 +20,11 @@ def fill_axis(
     axis: plt.Axes,
     x_array: pd.Series,
     y_array: pd.Series,
-    label_x: str,
-    label_y: str,
     **kwargs
-    ) -> None:
-    """Generic string to fill an axis"""
+) -> None:
+    """Generic function to fill an axis"""
     axis.scatter(x_array, y_array, **kwargs)
-    axis.set(xlabel=label_x, ylabel=label_y)
-    
+
     return None
 
 
@@ -38,9 +36,16 @@ def clean_multifigure(total_figure, total_axis):
 def read_exoplanet_parameters() -> pl.DataFrame:
     # Read epa file as polars data frame
     filename = "nasa_epa_fulldata.csv"
-    exoplanet_data = pl.read_csv(filename)
+    data = pl.read_csv(filename)
 
-    return exoplanet_data
+    # Sort the table by total count of method discoveries
+    sort = {
+        method: data.filter(pl.col("discoverymethod") == method).shape[0]
+        for method in data["discoverymethod"].unique()
+    }
+    sort = dict(sorted(sort.items(), key=lambda item: item[1], reverse=True))
+
+    return data, sort
 
 
 def update_exoplanet_parameters() -> None:

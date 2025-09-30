@@ -12,23 +12,25 @@ def main():
     namestring = ""
 
     for i in range(1, 4):
-        query = pl.read_csv(f"JWST_targets_c{i}.csv")
+        query = pl.read_csv(f"jtp_c{i}.csv")
 
         # Possible: Filter by specific parameters
         # query = query.filter(pl.col("Type") == "Eclipse")
 
         for element in query["Target Name"].to_numpy():
             namestring += f"'{element}',"
-
+    
+    print(len(np.unique(namestring.split(","))))
     # Remove the last, redundant "," in 'namestring'
     namestring = np.array(namestring[:-1])
+    exit()
 
     # Exoplanet Archive as TAP query source
     tap_source = "https://exoplanetarchive.ipac.caltech.edu/TAP"
     service = pyvo.dal.TAPService(tap_source)
 
-    # Targets of JWST C1, C2, C3
-    query_jwst = ("SELECT pl_name, pl_rade, pl_orbper, pl_eqt FROM pscomppars"
+    # Targets of JWST C1, C2, C3, C4
+    query_jwst = ("SELECT pl_name, pl_rade, pl_orbper, pl_eqt FROM pscomppars "
                   f"WHERE pl_name in ({namestring})")
     jwst_table = service.search(query_jwst)
 
@@ -148,7 +150,7 @@ def plot_jwst_targets(
 
     axis.scatter(
         jwst_targets["pl_orbper"], jwst_targets["pl_rade"],
-        marker="+", zorder=103, label="JWST targets"
+        marker="x", zorder=103, label="JWST targets", c="tab:red"
     )
 
     return axis
@@ -176,7 +178,7 @@ def plot_wasp39b(
     axis.scatter(
         jwst_target_data["pl_orbper"][planet_idx],
         jwst_target_data["pl_rade"][planet_idx],
-        marker="x", c="tab:red", zorder=104, label="WASP-39 b"
+        marker="+", c="tab:blue", zorder=104, label="WASP-39 b"
     )
 
     return axis

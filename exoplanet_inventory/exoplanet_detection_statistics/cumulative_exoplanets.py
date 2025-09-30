@@ -11,7 +11,7 @@ def main() -> None:
     if args.update:
         u.update_exoplanet_parameters()
 
-    # Instantiate the plotting frame
+    # Instantiate the plotting frame(s)
     fig, ax = u.set_discovery_figure(space_missions=args.spacemissions)
 
     # Generate main data frame, sorted by discovery year
@@ -25,6 +25,33 @@ def main() -> None:
     fig.tight_layout()
     fig.savefig("cumulative_exoplanet_discoveries.svg")
     fig.savefig("cumulative_exoplanet_discoveries.pdf")
+
+    # Do this (quick and dirty) for alternative figure as well
+    import matplotlib.pyplot as plt
+    fig_alt, ax_alt = u.set_discovery_figure_alt(
+        space_missions=args.spacemissions
+    )
+
+    import numpy as np
+    years = cumulative_discoveries["year"]
+    total = np.zeros(years.shape[0])
+
+    for key, item in cumulative_discoveries.items():
+        if key in ["year", "method_names"]:
+            pass
+        else:
+            total = np.add(total, item)
+            idxs = np.where(item > 0)
+            ax_alt.plot(years[idxs], item[idxs], label=key, ls="-", lw=1.5)
+
+    ax_alt.plot(years, total, c="k", lw=3, zorder=0)
+    ax_alt.set(
+        yticks=[1, 10, 100, 1000, 10000],
+        yticklabels=["1", "10", "100", "10$^3$", "10$^4$"]
+    )
+    ax_alt.legend()
+
+    fig_alt.savefig("individual_exoplanet_discoveries.pdf")
 
 
 def argument_parser() -> argparse.ArgumentParser:
@@ -54,4 +81,9 @@ def argument_parser() -> argparse.ArgumentParser:
 
 
 if __name__ == "__main__":
+    import matplotlib.pyplot as plt
+    plt.style.use(
+        "https://raw.githubusercontent.com/simon-ast/matplotlib-plot-style/"
+        "main/corner_style.mplstyle"
+    )
     main()

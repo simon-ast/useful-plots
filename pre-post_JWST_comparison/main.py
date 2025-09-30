@@ -6,16 +6,36 @@ import matplotlib.pyplot as plt
 import util as u
 
 
+def set_plot():
+    figure, axis = plt.subplots(figsize=(10, 4))
+    
+    axis.set(
+        xlabel="$\\lambda$ [$\\mu$m]", ylabel="$(R_\\mathrm{p} / R_*)^2$ [%]",
+        ylim=(1.98, 2.32), xlim=(.2, 5.4)
+    ) 
+    
+    return figure, axis
+
+
+def wrap_finish(figure, save_name):
+    figure.tight_layout()
+    figure.savefig(f"spectra_{save_name}.png", dpi=600)
+
+
 def main():
     col_pre = wrap_collected_spectra("pre-JWST")
     col_post = wrap_collected_spectra("post-JWST")
 
-    fig, ax = plt.subplots()
+    fig, ax = set_plot()
     plot_separated(col_pre, ax)
+    ax.legend(loc="lower right")
+    wrap_finish(fig, "pre-JWST")
+    
+    fig, ax = set_plot()
     plot_together(col_post, ax)
-    ax.legend()
-
-    plt.show()
+    plot_separated(col_pre, ax)
+    ax.legend(loc="lower right")
+    wrap_finish(fig, "post-JWST")
 
 
 def wrap_collected_spectra(folder):
@@ -72,4 +92,8 @@ def plot_together(collection, axis):
 
 
 if __name__ == "__main__":
+    plt.style.use(
+        "https://raw.githubusercontent.com/simon-ast/"
+        "matplotlib-plot-style/main/default_style.mplstyle"
+    )
     main()
