@@ -1,6 +1,5 @@
 import h5py as h5
 import numpy as np
-# import matplotlib.pyplot as plt
 import pandas as pd
 
 # GLOBALS
@@ -11,7 +10,7 @@ BIN_INFO = 100
 
 
 def main():
-    test = "1H2-16O__POKAZATEL__R15000_0.3-50mu.xsec.TauREx.h5"
+    test = "14N-1H3__CoYuTe.R15000_0.3-50mu.xsec.TauREx.h5"
     _ = prepare_xsec_data(f"/home/simon/Downloads/{test}")
 
     return
